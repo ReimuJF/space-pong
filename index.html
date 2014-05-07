@@ -12,35 +12,81 @@
     var ballSpeed = 300;
 	var ballReleased = false;
 	
+	var music;
+	var fxhit;
+	var fxwin;
+	var fxlose;
+	var starfield;
+	var flag = true;
+	
+	var mmuteButton;
+	var startButton;
+	
     
     function preload() {
         game.load.image('bet', 'assets/bet.png');
         game.load.image('ball', 'assets/ball.png');
         game.load.image('background', 'assets/starfield.jpg');
 		game.load.image('star', 'assets/star.png');
+		game.load.audio('bgm', 'assets/audio/bgm.mp3');
+		game.load.audio('sfx', 'assets/audio/exp.wav');
+		game.load.audio('win', 'assets/audio/exp2.wav');
+		game.load.audio('lose', 'assets/audio/exp3.wav');
     }
 	
 
     function create() {
-		game.canvas.style.cursor = 'none';
-        game.add.tileSprite(0, 0, 480, 600, 'background');
+		music = game.add.audio('bgm');
+		music.play('',0,1,true);
+		//music.play();
+		fxhit = game.add.audio('sfx');
+		fxwin = game.add.audio('win');
+		fxlose = game.add.audio('lose');
+	    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+			//  We check bounds collisions against all walls other than the bottom one
+		game.physics.arcade.checkCollision.down = false;
+		//game.canvas.style.cursor = 'none';
+        starfield = game.add.tileSprite(0, 0, 480, 600, 'background');
 		textScore = game.add.text(0, 0, 'Score: ' + score , {fill: 'efefef'});
 		text = game.add.text(game.world.centerX, game.world.centerY-30, '', {fill: '#efefef'});
-		text.anchor.setTo(0.5, 0.5);
+		text.anchor.setTo(0.5);
 		playerBet = createBet(game.world.centerX-50, 550);
         computerBet = createBet(game.world.centerX-50, 50);
 		
+		
+		
+		
 		ball = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
-        ball.anchor.setTo(0.5, 0.5);
+        ball.anchor.setTo(0.5);
+		game.physics.enable(ball, Phaser.Physics.ARCADE);
         ball.body.collideWorldBounds = true;
-        ball.body.bounce.setTo(1, 1);
+        ball.body.bounce.setTo(1);
+		
+		
 		
 		emitter = game.add.emitter(0, 0, 200);
-
 		emitter.makeParticles('star');
 		
-		game.input.onDown.add(releaseBall, this);
+		cursors = game.input.keyboard.createCursorKeys();
+		startButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		mmuteButton = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
+		startButton.onDown.add(releaseBall, this);
+		mmuteButton.onDown.add(MusicPause, this);
+		//game.input.onDown.add(releaseBall, this);
     }
+	
+	function MusicPause(){
+	if (flag)
+		{
+	music.pause();
+	}
+	else
+	{
+	music.resume();
+	}
+	flag = !flag;
+	}
 	
 	function particleBurst(x, y) {
 
@@ -67,10 +113,12 @@
 		emitter.start(true, 500, null, 50);}
 	
 	function createBet(x, y) {
+		
         var bet = game.add.sprite(x, y, 'bet');
-        bet.anchor.setTo(0.5, 0.5);
+        bet.anchor.setTo(0.5);
+		game.physics.enable(bet, Phaser.Physics.ARCADE);
         bet.body.collideWorldBounds = true;
-        bet.body.bounce.setTo(1, 1);
+        bet.body.bounce.setTo(1);
         bet.body.immovable = true;
 
         return bet;
@@ -87,8 +135,21 @@
 	
 
     function update () {
-        //Управляем ракеткой игрока
-        playerBet.x = game.input.x;
+        //”правл¤ем ракеткой игрока
+       //playerBet.x = game.input.x;
+	   
+	    starfield.tilePosition.y += 2;
+		
+		 playerBet.body.velocity.setTo(0, 0);
+
+    if (cursors.left.isDown)
+    {
+        playerBet.body.velocity.x = -600;
+    }
+    else if (cursors.right.isDown)
+    {
+        playerBet.body.velocity.x = 600;
+    }
 
         var playerBetHalfWidth = playerBet.width / 2;
 
@@ -99,7 +160,7 @@
             playerBet.x = game.width - playerBetHalfWidth;
         }
 
-        //Управляем ракеткой компьютерного соперника
+        //”правл¤ем ракеткой компьютерного соперника
         if(computerBet.x - ball.x < -15) {
             computerBet.body.velocity.x = computerBetSpeed;
         }
@@ -110,8 +171,8 @@
             computerBet.body.velocity.x = 0;
         }
 		
-		game.physics.collide(ball, playerBet, ballHitsBet, null, this);
-        game.physics.collide(ball, computerBet, ballHitsBet, null, this);
+		game.physics.arcade.collide(ball, playerBet, ballHitsBet, null, this);
+        game.physics.arcade.collide(ball, computerBet, ballHitsBet, null, this);
 		
 		checkGoal();
     }
@@ -120,6 +181,7 @@
 	 
 		if (ball.y < 60) {
 			emitter.gravity = 5;
+			
 		} else if (ball.y > 580) {
 			emitter.gravity = -5;
 		}
@@ -128,19 +190,20 @@
         var diff = 0;
 
         if (_ball.x < _bet.x) {
-            //  Шарик находится с левой стороны ракетки
+            //  шарик находитс¤ с левой стороны ракетки
             diff = _bet.x - _ball.x;
             _ball.body.velocity.x = (-10 * diff);
         }
         else if (_ball.x > _bet.x) {
-            //  Шарик находится с правой стороны ракетки
+            //  шарик находитс¤ с правой стороны ракетки
             diff = _ball.x -_bet.x;
             _ball.body.velocity.x = (10 * diff);
         }
         else {
-            //  Шарик попал в центр ракетки, добавляем немножко трагической случайности его движению
+            //  шарик попал в центр ракетки, добавл¤ем немножко трагической случайности его движению
             _ball.body.velocity.x = 2 + Math.random() * 8;
         }
+		fxhit.play();
     }
 	
 		function showText(txt, timeout) {
@@ -160,6 +223,7 @@
 			showText('FUCK YEAH', 2000);
 			emitter.gravity = 1;
 			particleBurstEvent(240,300);
+			fxwin.play();
         } else if (ball.y > 580) {
             setBall();
 			computerBetSpeed = 250;
@@ -169,6 +233,7 @@
 			emitter.gravity = 1;
 			particleBurstEvent(240,300);
 			ballSpeed = 300;
+			fxlose.play();
         }
     }
 
