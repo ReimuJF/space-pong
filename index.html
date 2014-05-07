@@ -28,7 +28,7 @@
         game.load.image('ball', 'assets/ball.png');
         game.load.image('background', 'assets/starfield.jpg');
 		game.load.image('star', 'assets/star.png');
-		game.load.audio('bgm', 'assets/audio/bgm.mp3');
+		//game.load.audio('bgm', 'assets/audio/bgm.mp3');
 		game.load.audio('sfx', 'assets/audio/exp.wav');
 		game.load.audio('win', 'assets/audio/exp2.wav');
 		game.load.audio('lose', 'assets/audio/exp3.wav');
@@ -135,7 +135,7 @@
 	
 
     function update () {
-        //”правл¤ем ракеткой игрока
+        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
        //playerBet.x = game.input.x;
 	   
 	    starfield.tilePosition.y += 2;
@@ -160,7 +160,7 @@
             playerBet.x = game.width - playerBetHalfWidth;
         }
 
-        //”правл¤ем ракеткой компьютерного соперника
+        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         if(computerBet.x - ball.x < -15) {
             computerBet.body.velocity.x = computerBetSpeed;
         }
@@ -190,17 +190,17 @@
         var diff = 0;
 
         if (_ball.x < _bet.x) {
-            //  шарик находитс¤ с левой стороны ракетки
+            //  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             diff = _bet.x - _ball.x;
             _ball.body.velocity.x = (-10 * diff);
         }
         else if (_ball.x > _bet.x) {
-            //  шарик находитс¤ с правой стороны ракетки
+            //  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             diff = _ball.x -_bet.x;
             _ball.body.velocity.x = (10 * diff);
         }
         else {
-            //  шарик попал в центр ракетки, добавл¤ем немножко трагической случайности его движению
+            //  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             _ball.body.velocity.x = 2 + Math.random() * 8;
         }
 		fxhit.play();
