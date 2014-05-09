@@ -1,7 +1,7 @@
 <script src="phaser.js"></script>
 <script type="text/javascript">
 
-	var game = new Phaser.Game(480, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+	var game = new Phaser.Game(480, 600, Phaser.AUTO, 'Space Pong', { preload: preload, create: create, update: update });
 	
 	var logo;
 	var textH;
@@ -46,7 +46,7 @@
 
     function create() {
 		music = game.add.audio('bgm');
-		music.play('',0,1,true);
+		music.play('',0,0.15,true);
 		fxhit = game.add.audio('sfx');
 		fxwin = game.add.audio('win');
 		fxlose = game.add.audio('lose');
@@ -259,7 +259,7 @@
             //  шарик попал в центр ракетки, добавл¤ем немножко трагической случайности его движению
             _ball.body.velocity.x = 2 + Math.random() * 8;
         }
-		fxhit.play();
+		fxhit.play('',0,0.1);
     }
 	
 		function showText(txt, timeout) {
@@ -280,7 +280,7 @@
 			score += 1;
 			textScore.setText('Score: ' + score);
 			showText('ENEMY SHIP ELIMINATED!', 2000);
-			fxwin.play();
+			fxwin.play('',0,0.1);
 			setBall();
 	
 
@@ -295,7 +295,7 @@
 			textScore.setText('Score: ' + score);
 			showText('YOU ARE DEFEATED!', 2000);
 			ballSpeed = 300;
-			fxlose.play();			
+			fxlose.play('',0,0.1);			
         }
     }
 	function revive(){
@@ -311,7 +311,9 @@
             ball.body.velocity.y = 0;
             ballReleased = false;
         }
-		
+		function render() {
+    game.debug.soundInfo(music, 200, 320);
+}
 
         
     }
