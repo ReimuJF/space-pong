@@ -3,6 +3,8 @@
 
 	var game = new Phaser.Game(480, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	
+	var logo;
+	var textH;
     var playerBet;
     var computerBet;
     var ball;
@@ -18,6 +20,7 @@
 	var fxlose;
 	var starfield;
 	var flag = true;
+	var ShiftButton;
 	
 	var mmuteButton;
 	var startButton;
@@ -25,19 +28,22 @@
     
     function preload() {
         game.load.image('bet', 'assets/bet.png');
+		game.load.image('bet2', 'assets/bet2.png');	
         game.load.image('ball', 'assets/ball.png');
         game.load.image('background', 'assets/starfield.jpg');
 		game.load.image('star', 'assets/star.png');
+		game.load.image('logo', 'assets/space.png');
 		game.load.audio('bgm', 'assets/audio/bgm.mp3');
-		game.load.audio('sfx', 'assets/audio/Exp.wav');
-		game.load.audio('win', 'assets/audio/Exp2.wav');
-		game.load.audio('lose', 'assets/audio/Exp3.wav');
+		game.load.audio('sfx', 'assets/audio/exp.wav');
+		game.load.audio('win', 'assets/audio/exp2.wav');
+		game.load.audio('lose', 'assets/audio/exp3.wav');
     }
 	
 
     function create() {
 		music = game.add.audio('bgm');
 		music.play('',0,1,true);
+		
 		//music.play();
 		fxhit = game.add.audio('sfx');
 		fxwin = game.add.audio('win');
@@ -52,7 +58,7 @@
 		text = game.add.text(game.world.centerX, game.world.centerY-30, '', {fill: '#efefef'});
 		text.anchor.setTo(0.5);
 		playerBet = createBet(game.world.centerX-50, 550);
-        computerBet = createBet(game.world.centerX-50, 50);
+        computerBet = createBet2(game.world.centerX, 50);
 		
 		
 		
@@ -68,13 +74,24 @@
 		emitter = game.add.emitter(0, 0, 200);
 		emitter.makeParticles('star');
 		
+		logo = game.add.sprite(10, 100, 'logo');
+		logo.fixedToCamera = true;
+		textH = game.add.text(game.world.centerX-110, game.world.centerY+40, 'Controls:\nArrows to move\nShift+Arrows to boost\nSpace to release ball\n1 to mute music', {fill: '#efefef'});
+		
 		cursors = game.input.keyboard.createCursorKeys();
 		startButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		ShiftButton = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 		mmuteButton = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
 		startButton.onDown.add(releaseBall, this);
+		startButton.onDown.add(destroyLogo, this);
 		mmuteButton.onDown.add(MusicPause, this);
 		//game.input.onDown.add(releaseBall, this);
     }
+	
+	function destroyLogo(){
+	logo.kill();
+	textH.destroy();
+	}
 	
 	function MusicPause(){
 	if (flag)
@@ -86,6 +103,11 @@
 	music.resume();
 	}
 	flag = !flag;
+	}
+	
+	function ShiftSpeedUp(){
+
+	
 	}
 	
 	function particleBurst(x, y) {
@@ -124,6 +146,19 @@
         return bet;
     }
 	
+		
+	function createBet2(x, y) {
+		
+        var bet = game.add.sprite(x, y, 'bet2');
+        bet.anchor.setTo(0.5);
+		game.physics.enable(bet, Phaser.Physics.ARCADE);
+        bet.body.collideWorldBounds = true;
+        bet.body.bounce.setTo(1);
+        bet.body.immovable = true;
+
+        return bet;
+    }
+	
 	    function releaseBall() {
         if (!ballReleased) {
             ball.body.velocity.x = ballSpeed;
@@ -135,7 +170,7 @@
 	
 
     function update () {
-        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+        //”правл¤ем ракеткой игрока
        //playerBet.x = game.input.x;
 	   
 	    starfield.tilePosition.y += 2;
@@ -150,6 +185,14 @@
     {
         playerBet.body.velocity.x = 600;
     }
+	if (ShiftButton.isDown && cursors.left.isDown)
+    {
+        playerBet.body.velocity.x = -900;
+    }
+	 else if (ShiftButton.isDown && cursors.right.isDown)
+    {
+        playerBet.body.velocity.x = 900;
+    }
 
         var playerBetHalfWidth = playerBet.width / 2;
 
@@ -160,7 +203,7 @@
             playerBet.x = game.width - playerBetHalfWidth;
         }
 
-        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+        //”правл¤ем ракеткой компьютерного соперника
         if(computerBet.x - ball.x < -15) {
             computerBet.body.velocity.x = computerBetSpeed;
         }
@@ -190,17 +233,17 @@
         var diff = 0;
 
         if (_ball.x < _bet.x) {
-            //  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            //  шарик находитс¤ с левой стороны ракетки
             diff = _bet.x - _ball.x;
             _ball.body.velocity.x = (-10 * diff);
         }
         else if (_ball.x > _bet.x) {
-            //  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            //  шарик находитс¤ с правой стороны ракетки
             diff = _ball.x -_bet.x;
             _ball.body.velocity.x = (10 * diff);
         }
         else {
-            //  пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+            //  шарик попал в центр ракетки, добавл¤ем немножко трагической случайности его движению
             _ball.body.velocity.x = 2 + Math.random() * 8;
         }
 		fxhit.play();
