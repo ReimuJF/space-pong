@@ -8,6 +8,8 @@
     var playerBet;
     var computerBet;
     var ball;
+	var explosions;
+	var sexplosions;
 	
 	var score = 0;
 	var computerBetSpeed = 250;
@@ -37,14 +39,14 @@
 		game.load.audio('sfx', 'assets/audio/exp.wav');
 		game.load.audio('win', 'assets/audio/exp2.wav');
 		game.load.audio('lose', 'assets/audio/exp3.wav');
+		game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
+		game.load.spritesheet('kaboom2', 'assets/explode2.png', 32, 32);
     }
 	
 
     function create() {
 		music = game.add.audio('bgm');
 		music.play('',0,1,true);
-		
-		//music.play();
 		fxhit = game.add.audio('sfx');
 		fxwin = game.add.audio('win');
 		fxlose = game.add.audio('lose');
@@ -78,12 +80,31 @@
 		logo.fixedToCamera = true;
 		textH = game.add.text(game.world.centerX-110, game.world.centerY+40, 'Controls:\nArrows to move\nShift+Arrows to boost\nSpace to release ball\n1 to mute music', {fill: '#efefef'});
 		
+		    explosions = game.add.group();
+
+    for (var i = 0; i < 16; i++)
+    {
+        var explosionAnimation = explosions.create(0, 0, 'kaboom', [0], false);
+        explosionAnimation.anchor.setTo(0.5, 0.5);
+        explosionAnimation.animations.add('kaboom');
+    }
+	
+		sexplosions = game.add.group();
+	    for (var i = 0; i < 16; i++)
+    {
+        var explosionAnimation = sexplosions.create(0, 0, 'kaboom2', [0], false);
+        explosionAnimation.anchor.setTo(0.5, 0.5);
+        explosionAnimation.animations.add('kaboom2');
+    }
+
+		
 		cursors = game.input.keyboard.createCursorKeys();
 		startButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		ShiftButton = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 		mmuteButton = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
 		startButton.onDown.add(releaseBall, this);
 		startButton.onDown.add(destroyLogo, this);
+		startButton.onDown.add(revive, this);
 		mmuteButton.onDown.add(MusicPause, this);
 		//game.input.onDown.add(releaseBall, this);
     }
@@ -121,18 +142,6 @@
 		//  The third is ignored when using burst/explode mode
 		//  The final parameter (10) is how many particles will be emitted in this single burst
 		emitter.start(true, 200, null, 5);}
-		
-		function particleBurstEvent(x, y) {
-
-		//  Position the emitter where the mouse/touch event was
-		emitter.x = x;
-		emitter.y = y;
-
-		//  The first parameter sets the effect to "explode" which means all particles are emitted at once
-		//  The second gives each particle a 2000ms lifespan
-		//  The third is ignored when using burst/explode mode
-		//  The final parameter (10) is how many particles will be emitted in this single burst
-		emitter.start(true, 500, null, 50);}
 	
 	function createBet(x, y) {
 		
@@ -222,13 +231,17 @@
 	
 	 function ballHitsBet (_ball, _bet) {
 	 
-		if (ball.y < 60) {
+		/*if (ball.y < 60) {
 			emitter.gravity = 5;
 			
 		} else if (ball.y > 580) {
 			emitter.gravity = -5;
 		}
-		particleBurst(_bet.x, _bet.y);
+		particleBurst(_bet.x, _bet.y);*/
+		
+		var explosion = sexplosions.getFirstExists(false);
+			explosion.reset(_bet.body.x+70, _bet.body.y+35);
+			explosion.play('kaboom2', 30, false, true);
 		
         var diff = 0;
 
@@ -258,27 +271,37 @@
 	
 	    function checkGoal() {
         if (ball.y < 25) {
-            setBall();
+			computerBet.kill();
+			var explosion = explosions.getFirstExists(false);
+			explosion.reset(computerBet.body.x+70, computerBet.body.y+35);
+			explosion.play('kaboom', 30, false, true);
 			computerBetSpeed += 100;
 			ballSpeed += 110;
 			score += 1;
 			textScore.setText('Score: ' + score);
-			showText('FUCK YEAH', 2000);
-			emitter.gravity = 1;
-			particleBurstEvent(240,300);
+			showText('ENEMY SHIP ELIMINATED!', 2000);
 			fxwin.play();
+			setBall();
+	
+
         } else if (ball.y > 580) {
+			playerBet.kill();
+			var explosion = explosions.getFirstExists(false);
+			explosion.reset(playerBet.body.x+70, playerBet.body.y+35);
+			explosion.play('kaboom', 30, false, true);
             setBall();
 			computerBetSpeed = 250;
 			score = 0;
 			textScore.setText('Score: ' + score);
-			showText('YOU FAILED!', 2000);
-			emitter.gravity = 1;
-			particleBurstEvent(240,300);
+			showText('YOU ARE DEFEATED!', 2000);
 			ballSpeed = 300;
-			fxlose.play();
+			fxlose.play();			
         }
     }
+	function revive(){
+	computerBet.revive();
+	playerBet.revive();
+	}
 
     function setBall() {
         if (ballReleased) {
