@@ -7,7 +7,6 @@
     var ball;
 	var explosions;
 	var sexplosions;
-	var canvas = document.getElementById('myCanvas');
 	var score = 0;
 	var computerShipSpeed = 250;
     var ballSpeed = 300;

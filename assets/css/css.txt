@@ -1,0 +1,11 @@
+#viewer {
+
+	position: absolute;
+	top: 0px;
+	left: 300px;
+	width: -webkit-calc(100% - 300px); /* Safari */
+	width: calc(100% - 300px);
+	height: 100%;
+	border: 0px;
+
+}
