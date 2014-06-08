@@ -94,7 +94,6 @@
 		
 		cursors = game.input.keyboard.createCursorKeys();
 		game.input.onDown.add(unpause, self);
-		//pauseButton = game.input.keyboard.addke
 		startButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		ShiftButton = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 		mmuteButton = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
@@ -102,7 +101,6 @@
 		startButton.onDown.add(destroyLogo, this);
 		startButton.onDown.add(revive, this);
 		mmuteButton.onDown.add(MusicPause, this);
-		//game.input.onDown.add(releaseBall, this);
     }
 	
 	//function fpause(){
@@ -215,8 +213,7 @@
         else if (playerShip.x > game.width - playerShipHalfWidth) {
             playerShip.x = game.width - playerShipHalfWidth;
         }
-
-        //”правл¤ем ракеткой компьютерного соперника
+		
         if(computerShip.x - ball.x < -15) {
             computerShip.body.velocity.x = computerShipSpeed;
         }
@@ -242,17 +239,14 @@
         var diff = 0;
 
         if (_ball.x < _Ship.x) {
-            //  шарик находитс¤ с левой стороны ракетки
             diff = _Ship.x - _ball.x;
             _ball.body.velocity.x = (-10 * diff);
         }
         else if (_ball.x > _Ship.x) {
-            //  шарик находитс¤ с правой стороны ракетки
             diff = _ball.x -_Ship.x;
             _ball.body.velocity.x = (10 * diff);
         }
         else {
-            //  шарик попал в центр ракетки, добавл¤ем немножко трагической случайности его движению
             _ball.body.velocity.x = 2 + Math.random() * 8;
         }
 		fxhit.play('',0,0.1);
