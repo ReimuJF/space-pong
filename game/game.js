@@ -53,7 +53,7 @@
 		
 		game.physics.arcade.checkCollision.down = false;
         starfield = game.add.tileSprite(0, 0, 480, 600, 'background');
-		textScore = game.add.text(0, 0, 'Score: ' + score , {fill: 'efefef'});
+		textScore = game.add.text(0, 0, 'Score: ' + score , {fill: '#efefef'});
 		text = game.add.text(game.world.centerX, game.world.centerY-30, '', {fill: '#efefef'});
 		text.anchor.setTo(0.5);
 		playerShip = createShip(game.world.centerX-50, 550);
@@ -114,7 +114,7 @@
 			//}
 		//};
 		
-		//Эти две функции реализованны из за бага с фреймворком.
+		//ГќГІГЁ Г¤ГўГҐ ГґГіГ­ГЄГ¶ГЁГЁ Г°ГҐГ Г«ГЁГ§Г®ГўГ Г­Г­Г» ГЁГ§ Г§Г  ГЎГ ГЈГ  Г± ГґГ°ГҐГ©Г¬ГўГ®Г°ГЄГ®Г¬.
 	function fpause(){
         game.paused = true;
 	}
