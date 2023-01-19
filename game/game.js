@@ -191,19 +191,19 @@
 
     if (cursors.left.isDown)
     {
-        playerShip.body.velocity.x = -450;
+        playerShip.body.velocity.x = -550;
     }
     else if (cursors.right.isDown)
     {
-        playerShip.body.velocity.x = 450;
+        playerShip.body.velocity.x = 550;
     }
 	if (ShiftButton.isDown && cursors.left.isDown)
     {
-        playerShip.body.velocity.x = -600;
+        playerShip.body.velocity.x = -650;
     }
 	 else if (ShiftButton.isDown && cursors.right.isDown)
     {
-        playerShip.body.velocity.x = 600;
+        playerShip.body.velocity.x = 650;
     }
 
         var playerShipHalfWidth = playerShip.width / 2;
@@ -275,7 +275,7 @@
 			setBall();
 	
 
-        } else if (ball.y >= 550) {
+        } else if (ball.y >= 555) {
 			playerShip.kill();
 			var explosion = explosions.getFirstExists(false);
 			explosion.reset(playerShip.body.x+70, playerShip.body.y+35);
