@@ -199,11 +199,11 @@
     }
 	if (ShiftButton.isDown && cursors.left.isDown)
     {
-        playerShip.body.velocity.x = -750;
+        playerShip.body.velocity.x = -650;
     }
 	 else if (ShiftButton.isDown && cursors.right.isDown)
     {
-        playerShip.body.velocity.x = 750;
+        playerShip.body.velocity.x = 650;
     }
 
         var playerShipHalfWidth = playerShip.width / 2;
