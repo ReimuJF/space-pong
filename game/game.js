@@ -260,7 +260,7 @@
 	}
 	
 	    function checkGoal() {
-        if (ball.y < 25) {
+        if (ball.y <= 25) {
 			computerShip.kill();
 			var explosion = explosions.getFirstExists(false);
 			explosion.reset(computerShip.body.x+70, computerShip.body.y+35);
@@ -274,7 +274,7 @@
 			setBall();
 	
 
-        } else if (ball.y > 580) {
+        } else if (ball.y >= 580) {
 			playerShip.kill();
 			var explosion = explosions.getFirstExists(false);
 			explosion.reset(playerShip.body.x+70, playerShip.body.y+35);
