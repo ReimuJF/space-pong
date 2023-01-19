@@ -275,7 +275,7 @@
 			setBall();
 	
 
-        } else if (ball.y >= 575) {
+        } else if (ball.y >= 570) {
 			playerShip.kill();
 			var explosion = explosions.getFirstExists(false);
 			explosion.reset(playerShip.body.x+70, playerShip.body.y+35);
