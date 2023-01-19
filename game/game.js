@@ -45,6 +45,7 @@
 
     function create() {
 		music = game.add.audio('bgm');
+	    	music.loop = true
 		music.play('',0,0.15,true);
 		fxhit = game.add.audio('sfx');
 		fxwin = game.add.audio('win');
@@ -151,7 +152,7 @@
 		
         var Ship = game.add.sprite(x, y, 'Ship');
         Ship.anchor.setTo(0.5);
-		game.physics.enable(Ship, Phaser.Physics.ARCADE);
+	game.physics.enable(Ship, Phaser.Physics.ARCADE);
         Ship.body.collideWorldBounds = true;
         Ship.body.bounce.setTo(1);
         Ship.body.immovable = true;
@@ -274,12 +275,12 @@
 			setBall();
 	
 
-        } else if (ball.y >= 585) {
+        } else if (ball.y >= 575) {
 			playerShip.kill();
 			var explosion = explosions.getFirstExists(false);
 			explosion.reset(playerShip.body.x+70, playerShip.body.y+35);
 			explosion.play('kaboom', 30, false, true);
-            setBall();
+            		setBall();
 			computerShipSpeed = 250;
 			score = 0;
 			textScore.setText('Score: ' + score);
