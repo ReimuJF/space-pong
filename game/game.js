@@ -191,19 +191,19 @@
 
     if (cursors.left.isDown)
     {
-        playerShip.body.velocity.x = -550;
+        playerShip.body.velocity.x = -600;
     }
     else if (cursors.right.isDown)
     {
-        playerShip.body.velocity.x = 550;
+        playerShip.body.velocity.x = 600;
     }
 	if (ShiftButton.isDown && cursors.left.isDown)
     {
-        playerShip.body.velocity.x = -650;
+        playerShip.body.velocity.x = -800;
     }
 	 else if (ShiftButton.isDown && cursors.right.isDown)
     {
-        playerShip.body.velocity.x = 650;
+        playerShip.body.velocity.x = 800;
     }
 
         var playerShipHalfWidth = playerShip.width / 2;
