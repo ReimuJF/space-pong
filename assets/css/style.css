@@ -1,0 +1,32 @@
+body {
+	text-align: center;
+	background-color: #000000;
+	font-family: "Lucida Grande";
+}
+
+.container {
+	display: flex;
+	margin: auto;
+	align-items: center;
+	flex-direction: column;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+a:visited {
+	text-decoration: none;
+}
+
+a {
+	text-decoration: none;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+p {
+	text-decoration: none;
+	font-weight: bold;
+	color: #FFFFFF;
+}
