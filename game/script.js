@@ -20,18 +20,18 @@ class SpaceGame {
     }
 
     preload = () => {
-        this.game.load.image('Ship', 'assets/bet.png');
-        this.game.load.image('Ship2', 'assets/bet2.png');
-        this.game.load.image('ball', 'assets/ball.png');
-        this.game.load.image('background', 'assets/starfield.jpg');
-        this.game.load.image('star', 'assets/star.png');
-        this.game.load.image('logo', 'assets/space.png');
-        this.game.load.audio('bgm', 'assets/audio/bgm.mp3');
-        this.game.load.audio('sfx', 'assets/audio/exp.wav');
-        this.game.load.audio('win', 'assets/audio/exp2.wav');
-        this.game.load.audio('lose', 'assets/audio/exp3.wav');
-        this.game.load.spritesheet('kaboom', 'assets/explode.png', 128, 128);
-        this.game.load.spritesheet('kaboom2', 'assets/explode2.png', 32, 32);
+        this.game.load.image('Ship', './assets/bet.png');
+        this.game.load.image('Ship2', './assets/bet2.png');
+        this.game.load.image('ball', './assets/ball.png');
+        this.game.load.image('background', './assets/starfield.jpg');
+        this.game.load.image('star', './assets/star.png');
+        this.game.load.image('logo', './assets/space.png');
+        this.game.load.audio('bgm', './assets/audio/bgm.mp3');
+        this.game.load.audio('sfx', './assets/audio/exp.wav');
+        this.game.load.audio('win', './assets/audio/exp2.wav');
+        this.game.load.audio('lose', './assets/audio/exp3.wav');
+        this.game.load.spritesheet('kaboom', './assets/explode.png', 128, 128);
+        this.game.load.spritesheet('kaboom2', './assets/explode2.png', 32, 32);
     }
 
     create = () => {
